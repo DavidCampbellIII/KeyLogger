@@ -6,6 +6,7 @@ import org.jnativehook.keyboard.NativeKeyListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -18,8 +19,8 @@ public class Main implements NativeKeyListener {
     EventLine keyline;
     int keycount = 0;
     Trie words = new Trie();
-    TreeMap <String, Context> contexts;
-    Logger l = Logger.getLogger();
+    TreeMap<String, Context> contexts;
+    //Logger l = Logger.getLogger();
     PrintWriter pw = new PrintWriter(new File("KeyLogger.txt"));
 
     public Main() throws FileNotFoundException {

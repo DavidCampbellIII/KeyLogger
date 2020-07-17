@@ -24,7 +24,7 @@ public class Trie {
         current = root;
     }
     public void add(EventLine event){
-        for(EventLine.Event e:event.events){
+        for(Event e:event.events){
             if(e.type == EventLine.KEY_DOWN){
                 String data = NativeKeyEvent.getKeyText(e.e.getKeyCode());
                 if(data.equals(" ")){
