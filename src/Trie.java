@@ -23,6 +23,7 @@ public class Trie {
         root = new Node(" ");
         current = root;
     }
+
     public void add(EventLine event){
         for(Event e:event.events){
             if(e.type == EventLine.KEY_DOWN){
