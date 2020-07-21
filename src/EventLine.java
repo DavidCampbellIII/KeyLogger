@@ -1,40 +1,76 @@
 import org.jnativehook.keyboard.NativeKeyEvent;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class EventLine {
-    public static char KEY_UP = 'U';
-    public static char KEY_DOWN = 'D';
-//    class Event{
-//        public char type;
-//        public NativeKeyEvent e;
-//
-//        public Event(char type, NativeKeyEvent e){
-//            this.type = type;
-//            this.e = e;
-//        }
-//    }
-
     public long lastTime = 0;
-    public List<Event> events;
-    public EventLine(){
+    public HashMap<Integer, Event> activeEvents;
+    public List<Event> completedEvents;
+    public List<Action> actions;
 
-        events = new LinkedList<>();
+    public EventLine()
+    {
+        activeEvents = new HashMap<Integer, Event>();
+        completedEvents = new ArrayList<>();
+        actions = new ArrayList<>();
     }
 
-    public void addEvent(char type, NativeKeyEvent e){
-        events.add(new Event(type, e));
+    public void addEvent(int type, KeyState state)
+    {
+        if(state == KeyState.KEY_DOWN && !activeEvents.containsKey(type))
+        {
+            System.out.println("Pressing down key!");
+            activeEvents.put(type, new Event(type));
+            actions.add(new Action(type, KeyState.KEY_DOWN));
+        }
+        else
+        {
+            System.out.println("Releasing key!");
+            Event completedEvent = activeEvents.remove(type);
+            completedEvent.release();
+            completedEvents.add(completedEvent);
+            actions.add(new Action(type, KeyState.KEY_UP));
+        }
     }
 
-    public String toString(){
+    public String toStringActions()
+    {
+        StringBuilder result = new StringBuilder();
+
+        for(Action action : actions)
+        {
+            result.append(action.getTimeStamp());
+            result.append(":\t");
+            result.append(NativeKeyEvent.getKeyText(action.getKey()));
+            result.append("\t");
+            result.append(action.getState());
+            result.append("\n");
+        }
+
+        return result.toString();
+    }
+
+    public String toStringEvents()
+    {
+        StringBuilder result = new StringBuilder();
+
+        for(Event event : completedEvents)
+        {
+            result.append(NativeKeyEvent.getKeyText(event.getType()));
+            result.append(":\t");
+            result.append(event.getElaspedTimeStamp());
+            result.append("\n");
+        }
+
+        return result.toString();
+    }
+
+    /*public String toString(){
         String out = "";
         lastTime = 0;
         Map<Integer, Long> keystarttime = new HashMap<>();
-        for(Event event:events){
-            if(event.type == KEY_DOWN){
+        for(Action action : actions){
+            if(action.getState() == KeyState.KEY_DOWN){
                 keystarttime.put(event.e.getKeyCode(),event.e.getWhen());
                 out += String.format("%d ↓ %s ", event.e.getWhen() - lastTime, NativeKeyEvent.getKeyText(event.e.getKeyCode()));
             } else if(event.type == KEY_UP) {
@@ -45,5 +81,5 @@ public class EventLine {
         }
         return out;
     }
-
+     */
 }

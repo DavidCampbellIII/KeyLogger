@@ -24,7 +24,7 @@ public class Trie {
         current = root;
     }
 
-    public void add(EventLine event){
+    /*public void add(EventLine event){
         for(Event e:event.events){
             if(e.type == EventLine.KEY_DOWN){
                 String data = NativeKeyEvent.getKeyText(e.e.getKeyCode());
@@ -41,6 +41,8 @@ public class Trie {
             }
         }
     }
+     */
+
     public void report(){
         report(root, "");
     }

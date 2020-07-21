@@ -2,11 +2,39 @@ import org.jnativehook.keyboard.NativeKeyEvent;
 
 public class Event implements java.io.Serializable {
 
-    public char type;
-    public NativeKeyEvent e;
+    private int type;
+    private KeyState state;
 
-    public Event(char type, NativeKeyEvent e){
+    private long downTimeStamp;
+    private long upTimeStamp;
+    private long elaspedTimeStamp;
+
+    public Event(int type){
         this.type = type;
-        this.e = e;
+
+        state = KeyState.KEY_DOWN;
+        downTimeStamp = System.nanoTime();
+    }
+
+    public void release()
+    {
+        state = KeyState.KEY_UP;
+        upTimeStamp = System.nanoTime();
+        elaspedTimeStamp = upTimeStamp - downTimeStamp;
+    }
+
+    public int getType()
+    {
+        return type;
+    }
+
+    public KeyState getState()
+    {
+        return state;
+    }
+
+    public long getElaspedTimeStamp()
+    {
+        return elaspedTimeStamp;
     }
 }

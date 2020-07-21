@@ -40,19 +40,19 @@ public class Main implements NativeKeyListener {
             keyline = new EventLine();
         }
         keycount++;
-        keyline.addEvent(EventLine.KEY_DOWN, e);
+        keyline.addEvent(e.getKeyCode(), KeyState.KEY_DOWN);
         pressedTime = System.currentTimeMillis();
     }
 
     @Override
     public void nativeKeyReleased(NativeKeyEvent e) {
         keycount--;
-        keyline.addEvent(EventLine.KEY_UP, e);
+        keyline.addEvent(e.getKeyCode(), KeyState.KEY_UP);
         if(keycount == 0){
-            System.out.println(keyline.toString());
-            pw.println(keyline.toString());
+            //System.out.println(keyline.toStringEvents());
+            pw.println(keyline.toStringEvents());
             pw.flush();
-            words.add(keyline);
+            //words.add(keyline);
         }
         //System.out.println("Key Released " + NativeKeyEvent.getKeyText(e.getKeyCode()));
         //System.out.println(e.getWhen()/1000.0);
