@@ -1,5 +1,3 @@
-import org.jnativehook.keyboard.NativeKeyEvent;
-
 public class Event implements java.io.Serializable {
 
     private int type;

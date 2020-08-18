@@ -1,5 +1,3 @@
-import org.jnativehook.keyboard.NativeKeyEvent;
-
 import java.util.HashMap;
 
 public class Trie {

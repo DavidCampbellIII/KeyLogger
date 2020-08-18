@@ -1,5 +1,3 @@
-import org.jnativehook.keyboard.NativeKeyEvent;
-
 import java.util.*;
 
 public class EventLine {
@@ -43,7 +41,7 @@ public class EventLine {
         {
             result.append(action.getTimeStamp());
             result.append(":\t");
-            result.append(NativeKeyEvent.getKeyText(action.getKey()));
+            //result.append(NativeKeyEvent.getKeyText(action.getKey()));
             result.append("\t");
             result.append(action.getState());
             result.append("\n");
@@ -58,7 +56,7 @@ public class EventLine {
 
         for(Event event : completedEvents)
         {
-            result.append(NativeKeyEvent.getKeyText(event.getType()));
+            //result.append(NativeKeyEvent.getKeyText(event.getType()));
             result.append(":\t");
             result.append(event.getElaspedTimeStamp());
             result.append("\n");
@@ -66,22 +64,4 @@ public class EventLine {
 
         return result.toString();
     }
-
-    /*public String toString(){
-        String out = "";
-        lastTime = 0;
-        Map<Integer, Long> keystarttime = new HashMap<>();
-        for(Action action : actions){
-            if(action.getState() == KeyState.KEY_DOWN){
-                keystarttime.put(event.e.getKeyCode(),event.e.getWhen());
-                out += String.format("%d ↓ %s ", event.e.getWhen() - lastTime, NativeKeyEvent.getKeyText(event.e.getKeyCode()));
-            } else if(event.type == KEY_UP) {
-                long time = event.e.getWhen() - keystarttime.get(event.e.getKeyCode());
-                out += String.format("%d ↑ %s ", time, NativeKeyEvent.getKeyText(event.e.getKeyCode()));
-            }
-            lastTime = event.e.getWhen();
-        }
-        return out;
-    }
-     */
 }
