@@ -11,7 +11,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
-public class Main implements NativeKeyListener {
+public class MainJNativeHook implements NativeKeyListener {
 
     long startTime;
     long pressedTime;
@@ -23,7 +23,7 @@ public class Main implements NativeKeyListener {
     //Logger l = Logger.getLogger();
     PrintWriter pw = new PrintWriter(new File("KeyLogger.txt"));
 
-    public Main() throws FileNotFoundException {
+    public MainJNativeHook() throws FileNotFoundException {
         startTime = System.currentTimeMillis();
     }
 
@@ -31,6 +31,8 @@ public class Main implements NativeKeyListener {
     public void nativeKeyTyped(NativeKeyEvent e) {
         //System.out.println("Key Typed1");
         //System.out.println(nativeKeyEvent.toString());
+        System.out.println("Native hook thinks we have typed?");
+        System.out.println(e.getKeyCode());
     }
 
     @Override
@@ -41,6 +43,7 @@ public class Main implements NativeKeyListener {
         }
         keycount++;
         keyline.addEvent(e.getKeyCode(), KeyState.KEY_DOWN);
+        System.out.println("Native Hook thinks we are PRESSING!");
         pressedTime = System.currentTimeMillis();
     }
 
@@ -50,6 +53,7 @@ public class Main implements NativeKeyListener {
         keyline.addEvent(e.getKeyCode(), KeyState.KEY_UP);
         if(keycount == 0){
             //System.out.println(keyline.toStringEvents());
+            System.out.println("Native Hook thinks we are releasing!");
             pw.println(keyline.toStringEvents());
             pw.flush();
             //words.add(keyline);
@@ -68,19 +72,13 @@ public class Main implements NativeKeyListener {
         logger.setLevel(Level.WARNING);
         logger.setUseParentHandlers(false);
 
-	    try{
+	    try
+        {
 	       GlobalScreen.registerNativeHook();
-
-
         }
 	    catch(NativeHookException ex){
             System.out.println(ex.toString());
         }
-        GlobalScreen.addNativeKeyListener(new Main());
-
-    }
-
-    public void finalize(){
-        words.report();
+        GlobalScreen.addNativeKeyListener(new MainJNativeHook());
     }
 }

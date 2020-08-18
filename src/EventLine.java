@@ -22,6 +22,7 @@ public class EventLine {
             System.out.println("Pressing down key!");
             activeEvents.put(type, new Event(type));
             actions.add(new Action(type, KeyState.KEY_DOWN));
+            lastTime = System.currentTimeMillis();
         }
         else
         {
@@ -30,6 +31,7 @@ public class EventLine {
             completedEvent.release();
             completedEvents.add(completedEvent);
             actions.add(new Action(type, KeyState.KEY_UP));
+            System.out.println("Elapsed: " + (System.currentTimeMillis() - lastTime));
         }
     }
 
