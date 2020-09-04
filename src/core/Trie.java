@@ -1,3 +1,5 @@
+package core;
+
 import java.util.HashMap;
 
 public class Trie {
@@ -22,9 +24,9 @@ public class Trie {
         current = root;
     }
 
-    /*public void add(EventLine event){
-        for(Event e:event.events){
-            if(e.type == EventLine.KEY_DOWN){
+    /*public void add(core.EventLine event){
+        for(core.Event e:event.events){
+            if(e.type == core.EventLine.KEY_DOWN){
                 String data = NativeKeyEvent.getKeyText(e.e.getKeyCode());
                 if(data.equals(" ")){
                     current.count++;

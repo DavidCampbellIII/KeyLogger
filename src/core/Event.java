@@ -1,27 +1,31 @@
+package core;
+
+import lc.kra.system.keyboard.event.GlobalKeyEvent;
+
 public class Event implements java.io.Serializable {
 
-    private int type;
+    private GlobalKeyEvent type;
     private KeyState state;
 
     private long downTimeStamp;
     private long upTimeStamp;
     private long elaspedTimeStamp;
 
-    public Event(int type){
+    public Event(GlobalKeyEvent type){
         this.type = type;
 
         state = KeyState.KEY_DOWN;
-        downTimeStamp = System.nanoTime();
+        downTimeStamp = System.currentTimeMillis();
     }
 
     public void release()
     {
         state = KeyState.KEY_UP;
-        upTimeStamp = System.nanoTime();
+        upTimeStamp = System.currentTimeMillis();
         elaspedTimeStamp = upTimeStamp - downTimeStamp;
     }
 
-    public int getType()
+    public GlobalKeyEvent getType()
     {
         return type;
     }

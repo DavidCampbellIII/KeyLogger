@@ -1,3 +1,5 @@
+package core;
+
 public class Logger {
     private static Logger logger = null;
 
