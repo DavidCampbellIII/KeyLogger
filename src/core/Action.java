@@ -2,9 +2,10 @@ package core;
 
 import lc.kra.system.keyboard.event.GlobalKeyEvent;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class Action {
+public class Action implements Serializable {
 	private GlobalKeyEvent key;
 	private KeyState state;
 	private long fromStart;

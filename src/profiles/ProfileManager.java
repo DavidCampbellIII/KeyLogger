@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProfileManager {
+	private Profile currentlyTrackedProfile;
 	private List<Profile> profiles;
 
 	public ProfileManager()
@@ -50,18 +51,19 @@ public class ProfileManager {
 		return -1;
 	}
 
-	public void displayAllProfiles()
+	public boolean displayAllProfiles()
 	{
 		if(profiles.size() == 0)
 		{
-			System.out.println("No profiles on record");
-			return;
+			System.out.println("No profiles on record\n");
+			return false;
 		}
 
 		for(int i = 0; i < profiles.size(); i++)
 		{
 			System.out.println(profiles.get(i) + "\n");
 		}
+		return true;
 	}
 
 	public List<Profile> getProfiles()
@@ -72,5 +74,15 @@ public class ProfileManager {
 	public void setProfiles(List<Profile> profiles)
 	{
 		this.profiles = profiles;
+	}
+
+	public Profile getCurrentlyTrackedProfile()
+	{
+		return currentlyTrackedProfile;
+	}
+
+	public void setCurrentlyTrackedProfile(Profile currentlyTrackedProfile)
+	{
+		this.currentlyTrackedProfile = currentlyTrackedProfile;
 	}
 }

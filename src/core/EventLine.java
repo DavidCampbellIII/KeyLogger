@@ -26,7 +26,7 @@ public class EventLine {
         {
             if(!activeEvents.containsKey(keyCode))
             {
-                System.out.println("Pressing down key!");
+                //System.out.println("Pressing down key!");
                 activeEvents.put(keyCode, new Event(type));
                 trackedKeyLog.addAction(new Action(type, KeyState.KEY_DOWN, System.currentTimeMillis() - startTime));
                 lastTime = System.currentTimeMillis();
@@ -34,12 +34,12 @@ public class EventLine {
         }
         else //Key state is UP
         {
-            System.out.println("Releasing key!");
+            //System.out.println("Releasing key!");
             Event completedEvent = activeEvents.remove(keyCode);
             completedEvent.release();
             trackedKeyLog.addEvent(completedEvent);
             trackedKeyLog.addAction(new Action(type, KeyState.KEY_UP, System.currentTimeMillis() - startTime));
-            System.out.println("Elapsed: " + (System.currentTimeMillis() - lastTime));
+            //System.out.println("Elapsed: " + (System.currentTimeMillis() - lastTime));
         }
     }
 }

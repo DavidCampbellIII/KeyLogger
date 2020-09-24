@@ -1,8 +1,9 @@
 package core;
 
 import lc.kra.system.keyboard.event.GlobalKeyEvent;
+import java.io.Serializable;
 
-public class Event implements java.io.Serializable {
+public class Event implements Serializable {
 
     private GlobalKeyEvent type;
     private KeyState state;

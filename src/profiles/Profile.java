@@ -26,6 +26,13 @@ public class Profile implements Serializable {
 		statistics = new Statistics();
 	}
 
+	//Returns a string that represents just a little info about the profile
+	//Usually used for displaying the currently tracked profile in the main menu
+	public String getShortInfo()
+	{
+		return ID + ": " + lastName + ", " + firstName + " - " + role;
+	}
+
 	public String toString()
 	{
 		String result = "ID: " + ID;

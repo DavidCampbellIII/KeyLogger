@@ -10,19 +10,40 @@ import java.util.Map;
 public class KeyHook {
 	private EventLine eventLine;
 	private KeyLog keyLog;
-	private boolean isActive = true;
+	private GlobalKeyboardHook keyboardHook;
+	private boolean isActive = false;
+
+	public KeyHook() { }
 
 	public KeyHook(KeyLog keyLog)
 	{
+		setKeyLog(keyLog);
+		run();
+	}
+
+	public void setKeyLog(KeyLog keyLog)
+	{
 		this.keyLog = keyLog;
 		eventLine = new EventLine(keyLog);
-		run();
+	}
+
+	public void toggleTracking(boolean status)
+	{
+		isActive = status;
+		if(status)
+		{
+			run();
+		}
+		else
+		{
+			keyboardHook.shutdownHook();
+		}
 	}
 
 	private void run()
 	{
 		// Might throw a UnsatisfiedLinkError if the native library fails to load or a RuntimeException if hooking fails
-		GlobalKeyboardHook keyboardHook = new GlobalKeyboardHook(true); // Use false here to switch to hook instead of raw input
+		keyboardHook = new GlobalKeyboardHook(true); // Use false here to switch to hook instead of raw input
 
 		System.out.println("Global keyboard hook successfully started, press [escape] key to shutdown. Connected keyboards:");
 
@@ -35,41 +56,46 @@ public class KeyHook {
 			@Override
 			public void keyPressed(GlobalKeyEvent event)
 			{
-				System.out.println("DOWN:\t" + event.getKeyChar());
+				//System.out.println("DOWN:\t" + event.getKeyChar());
 				eventLine.addEvent(event, KeyState.KEY_DOWN);
 				if (event.getVirtualKeyCode() == GlobalKeyEvent.VK_ESCAPE) {
-					isActive = false;
+					toggleTracking(false);
 				}
 			}
 
 			@Override
 			public void keyReleased(GlobalKeyEvent event)
 			{
-				System.out.println("UP:\t" + event.getKeyChar());
+				//System.out.println("UP:\t" + event.getKeyChar());
 				eventLine.addEvent(event, KeyState.KEY_UP);
 			}
 		});
 
-		try
-		{
-			while (isActive)
-			{
-				Thread.sleep(128);
-			}
-		}
-		catch (InterruptedException e)
-		{
-			//Do nothing
-		}
-		finally
-		{
-			keyboardHook.shutdownHook();
-		}
+//		try
+//		{
+//			while (isActive)
+//			{
+//				Thread.sleep(128);
+//			}
+//		}
+//		catch (InterruptedException e)
+//		{
+//			//Do nothing
+//		}
+//		finally
+//		{
+//			keyboardHook.shutdownHook();
+//		}
 	}
 
 	public void flushKeyLog()
 	{
 		keyLog.writeActionsToFile();
 		keyLog.writeEventsToFile();
+	}
+
+	public boolean getIsActive()
+	{
+		return isActive;
 	}
 }
