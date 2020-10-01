@@ -5,8 +5,10 @@ import profiles.ProfileManager;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.List;
 
 public class SaveLoadManager {
+	private final String FILE_PATH = "profileSaveData/";
 	private ProfileManager profileManager;
 
 	public SaveLoadManager(ProfileManager profileManager)
@@ -18,11 +20,16 @@ public class SaveLoadManager {
 	{
 		try
 		{
-			FileOutputStream fileOut = new FileOutputStream("profile_test.profile");
-			ObjectOutputStream out = new ObjectOutputStream(fileOut);
-			out.writeObject(profileManager.getProfiles());
-			out.close();
-			fileOut.close();
+			List<Profile> profiles = profileManager.getProfiles();
+			for(int i = 0; i < profiles.size(); i++)
+			{
+				Profile currentProfile = profiles.get(i);
+				FileOutputStream fileOut = new FileOutputStream(FILE_PATH + currentProfile.getID() + ".profile");
+				ObjectOutputStream out = new ObjectOutputStream(fileOut);
+				out.writeObject(currentProfile);
+				out.close();
+				fileOut.close();
+			}
 		}
 		catch(IOException e)
 		{
@@ -35,11 +42,23 @@ public class SaveLoadManager {
 	{
 		try
 		{
-			FileInputStream fileIn = new FileInputStream("profile_test.profile");
-			ObjectInputStream in = new ObjectInputStream(fileIn);
-			profileManager.setProfiles((ArrayList<Profile>)in.readObject());
-			in.close();
-			fileIn.close();
+			File root = new File(FILE_PATH);
+			if(root.listFiles().length == 0)
+			{
+				System.out.println("No profiles to load from root save directory " + FILE_PATH);
+				return;
+			}
+
+			ArrayList<Profile> profiles = new ArrayList<>();
+			for(File currentFile : root.listFiles())
+			{
+				FileInputStream fileIn = new FileInputStream(currentFile);
+				ObjectInputStream in = new ObjectInputStream(fileIn);
+				profiles.add((Profile) in.readObject());
+				in.close();
+				fileIn.close();
+			}
+			profileManager.setProfiles(profiles);
 		}
 		catch(IOException e)
 		{

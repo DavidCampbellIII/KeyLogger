@@ -27,7 +27,7 @@ public class Main {
 		while (choice != 5)
 		{
 			displayMenu();
-			choice = input.nextInt();
+			choice = Input.validateInt("Please enter a valid choice");
 			switch (choice)
 			{
 				case 1:
@@ -98,6 +98,19 @@ public class Main {
 
 	private void selectProfile()
 	{
+		Profile currentlyTrackedProfile = profileManager.getCurrentlyTrackedProfile();
+		if(currentlyTrackedProfile != null)
+		{
+			System.out.println("You are currently tracking " + currentlyTrackedProfile.getShortInfo());
+			System.out.println("Do you want to stop tracking this profile, and choose a different profile to track? (Y/N)");
+			if(input.next().toLowerCase().charAt(0) == 'n')
+			{
+				return;
+			}
+
+			keyHook.toggleTracking(false);
+		}
+
 		System.out.println("==AVAILABLE PROFILES TO TRACK==");
 		if(profileManager.displayAllProfiles())
 		{
@@ -106,7 +119,7 @@ public class Main {
 			Profile profile;
 			do
 			{
-				ID = input.nextInt();
+				ID = Input.validateInt("Please enter a valid choice");
 				profile = profileManager.getProfile(ID);
 				if(profile == null)
 				{

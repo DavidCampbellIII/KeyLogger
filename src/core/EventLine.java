@@ -36,10 +36,17 @@ public class EventLine {
         {
             //System.out.println("Releasing key!");
             Event completedEvent = activeEvents.remove(keyCode);
-            completedEvent.release();
-            trackedKeyLog.addEvent(completedEvent);
-            trackedKeyLog.addAction(new Action(type, KeyState.KEY_UP, System.currentTimeMillis() - startTime));
-            //System.out.println("Elapsed: " + (System.currentTimeMillis() - lastTime));
+            if(completedEvent == null)
+            {
+                System.out.println("==ERROR: Tried to get active event that did not exist.  Keycode " + keyCode + "==");
+            }
+            else
+            {
+                completedEvent.release();
+                trackedKeyLog.addEvent(completedEvent);
+                trackedKeyLog.addAction(new Action(type, KeyState.KEY_UP, System.currentTimeMillis() - startTime));
+                //System.out.println("Elapsed: " + (System.currentTimeMillis() - lastTime));
+            }
         }
     }
 }

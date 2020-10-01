@@ -23,19 +23,27 @@ public class KeyHook {
 
 	public void setKeyLog(KeyLog keyLog)
 	{
+		//flush current keylogs (if there even are any)
+		//so that the data from the previously tracked profile is saved
+		flushKeyLog();
 		this.keyLog = keyLog;
 		eventLine = new EventLine(keyLog);
 	}
 
 	public void toggleTracking(boolean status)
 	{
+		//we wait for the key they are pressing to be released
+		//before we toggle the hook on or off
+		Utilities.pauseThread(100);
 		isActive = status;
 		if(status)
 		{
+			System.out.println("==STARTING KEYHOOK TRACKING==");
 			run();
 		}
 		else
 		{
+			System.out.println("==SHUTTING DOWN KEYHOOK TRACKING==");
 			keyboardHook.shutdownHook();
 		}
 	}
@@ -66,7 +74,7 @@ public class KeyHook {
 			@Override
 			public void keyReleased(GlobalKeyEvent event)
 			{
-				//System.out.println("UP:\t" + event.getKeyChar());
+				//System.out.println("UP:\t" + event.getKeyChar() + "\t" + event.getVirtualKeyCode());
 				eventLine.addEvent(event, KeyState.KEY_UP);
 			}
 		});
@@ -90,8 +98,11 @@ public class KeyHook {
 
 	public void flushKeyLog()
 	{
-		keyLog.writeActionsToFile();
-		keyLog.writeEventsToFile();
+		if(keyLog != null)
+		{
+			keyLog.writeActionsToFile();
+			keyLog.writeEventsToFile();
+		}
 	}
 
 	public boolean getIsActive()
