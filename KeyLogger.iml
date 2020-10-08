@@ -8,5 +8,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="system-hook-3.6" level="project" />
+    <orderEntry type="library" name="nz.ac.waikato.cms.weka:weka-stable:3.8.0" level="project" />
   </component>
 </module>
