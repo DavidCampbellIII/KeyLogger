@@ -1,22 +1,29 @@
 package core;
 
+import analysis.RealtimeAnalysis;
 import lc.kra.system.keyboard.event.GlobalKeyEvent;
 import profiles.KeyLog;
 
 import java.util.*;
 
 public class EventLine {
+    private final int NUM_KEYS_FOR_EVAL = 10;
+
     private long lastTime = 0;
     private HashMap<Integer, Event> activeEvents;
     private KeyLog trackedKeyLog;
+    private RealtimeAnalysis analysis;
 
     private long startTime;
+    private int numKeysPressed;
 
     public EventLine(KeyLog trackedKeyLog)
     {
         this.trackedKeyLog = trackedKeyLog;
         activeEvents = new HashMap<Integer, Event>();
         startTime = System.currentTimeMillis();
+        analysis = new RealtimeAnalysis();
+        numKeysPressed = 0;
     }
 
     public void addEvent(GlobalKeyEvent type, KeyState state)
@@ -42,10 +49,18 @@ public class EventLine {
             }
             else
             {
+                numKeysPressed++;
                 completedEvent.release();
+                analysis.addData(completedEvent.getElaspedTimeStamp(), System.currentTimeMillis());
                 trackedKeyLog.addEvent(completedEvent);
                 trackedKeyLog.addAction(new Action(type, KeyState.KEY_UP, System.currentTimeMillis() - startTime));
                 //System.out.println("Elapsed: " + (System.currentTimeMillis() - lastTime));
+
+                if(numKeysPressed >= NUM_KEYS_FOR_EVAL)
+                {
+                    numKeysPressed = 0;
+                    analysis.evaluate();
+                }
             }
         }
     }
